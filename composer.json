@@ -2,8 +2,19 @@
     "name": "waka/wn-wutils-plugin",
     "description": "Plugin Wutils",
     "type": "winter-plugin",
+    "repositories": [
+        {
+            "type": "vcs",
+            "url": "https://github.com/charlesStOlive/laravel-color-palette.git"
+        },
+        {
+            "type": "vcs",
+            "url": "https://github.com/charlesStOlive/php-html-parser"
+        }
+    ],
     "require": {
         "maatwebsite/excel": "^3.1",
+        "mexitek/phpcolors": "dev-master",
         "markrogoyski/math-php": "0.*",
         "brick/varexporter": "^0.3.5",
         "soundasleep/html2text": "~1.1",
