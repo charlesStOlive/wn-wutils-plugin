@@ -35,4 +35,40 @@ trait DbUtils
         });
         return $collection->toArray();
     }
+
+    public function listsNested($array, $value, $key = null, $indent = '-')
+    {
+        /*
+         * Recursive helper function
+         */
+        $buildCollection = function ($items, $depth = 0) use (&$buildCollection, $value, $key, $indent) {
+            $result = [];
+
+            $indentString = str_repeat($indent, $depth);
+            foreach ($items as $item) {
+
+                if ($key !== null) {
+                    $result[$item[$key]] = $indentString . $item[$value];
+                } else {
+                    $result[] = $indentString . $item[$value];
+                }
+
+                /*
+                 * Add the children
+                 */
+                $childItems = $item['children'] ?? [];
+                if (count($childItems) > 0) {
+                    $result = $result + $buildCollection($childItems, $depth + 1);
+                }
+            }
+
+            return $result;
+        };
+
+        /*
+         * Build a nested collection
+         */
+        $rootItems = $array;
+        return $buildCollection($rootItems);
+    }
 }
