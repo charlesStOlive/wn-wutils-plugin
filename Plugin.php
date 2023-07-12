@@ -33,11 +33,6 @@ class Plugin extends PluginBase
     {
         $aliasLoader = AliasLoader::getInstance();
 
-        //BOOT laravel PALETTE
-        $aliasLoader->alias('ColorPalette', \NikKanetiya\LaravelColorPalette\ColorPaletteFacade::class);
-        App::register(\NikKanetiya\LaravelColorPalette\ColorPaletteServiceProvider::class);
-
-
         //BOOT laravel Excel
         $aliasLoader->alias('Excel', \Maatwebsite\Excel\Facades\Excel::class);
         App::register(\Maatwebsite\Excel\ExcelServiceProvider::class);

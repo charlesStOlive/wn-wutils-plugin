@@ -5,10 +5,6 @@
     "repositories": [
         {
             "type": "vcs",
-            "url": "https://github.com/charlesStOlive/laravel-color-palette.git"
-        },
-        {
-            "type": "vcs",
             "url": "https://github.com/charlesStOlive/php-html-parser"
         }
     ],
@@ -18,6 +14,7 @@
         "markrogoyski/math-php": "0.*",
         "brick/varexporter": "^0.3.5",
         "soundasleep/html2text": "~1.1",
+        "ksubileau/color-thief-php": "^2.0.1",
         "joggapp/laravel-google-translate": "^8.1"
     },
     "license": "MIT",
