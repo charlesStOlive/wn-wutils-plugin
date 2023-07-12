@@ -12,10 +12,7 @@
         "maatwebsite/excel": "^3.1",
         "mexitek/phpcolors": "dev-master",
         "markrogoyski/math-php": "0.*",
-        "brick/varexporter": "^0.3.5",
-        "soundasleep/html2text": "~1.1",
-        "ksubileau/color-thief-php": "^2.0.1",
-        "joggapp/laravel-google-translate": "^8.1"
+        "soundasleep/html2text": "~1.1"
     },
     "license": "MIT",
     "authors": [
