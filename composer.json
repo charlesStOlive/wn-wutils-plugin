@@ -1,0 +1,19 @@
+{
+    "name": "waka/wn-wutils-plugin",
+    "description": "Plugin Wutils",
+    "type": "winter-plugin",
+    "require": {
+        "maatwebsite/excel": "^3.1",
+        "markrogoyski/math-php": "0.*",
+        "brick/varexporter": "^0.3.5",
+        "soundasleep/html2text": "~1.1",
+        "joggapp/laravel-google-translate": "^8.1"
+    },
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Charles Saint Olive",
+            "email": "contact@notilac.fr"
+        }
+    ]
+}

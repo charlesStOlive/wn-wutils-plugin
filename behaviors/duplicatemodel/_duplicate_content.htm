@@ -1,0 +1,27 @@
+<?= Form::open() ?>
+
+<div>
+
+    <h5>
+        Dupliquer
+    </h5>
+
+
+
+    <?=  $this->widget->myduplicateformWidget->render() ?>
+
+
+
+    <button type="submit"
+            data-request="onDuplicateValidation"
+            data-request-data="redirect:0, modelId:<?=$modelId?>"
+            data-hotkey="ctrl+s, cmd+s"
+            data-popup-load-indicator
+            class="btn btn-primary">
+        Valider
+    </button>
+
+
+</div>
+
+<?= Form::close() ?>

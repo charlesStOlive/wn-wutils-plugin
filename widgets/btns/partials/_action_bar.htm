@@ -1,0 +1,15 @@
+<div class="w-actionbar">
+    <div id="action-bar-container">
+        <?= $this->renderActionBtn($context) ?>
+    </div>
+    <?= $this->fireViewEvent('controller.btns.action_bar.before_partial') ?>
+    <?php if ($partials) : ?>
+        <?php foreach ($partials as $partial) : ?>
+            <?= $this->makePartial($partial['url']); ?>
+        <?php endforeach ?>
+    <?php endif ?>
+    <?= $this->fireViewEvent('controller.btns.action_bar.after_partial') ?>
+    <div id="action-bar-container-delete">
+        <?= $this->makePartial('sub/btn_delete'); ?>
+    </div>
+</div>
