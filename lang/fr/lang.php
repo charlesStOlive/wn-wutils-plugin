@@ -1,12 +1,8 @@
 <?php
 
 return [
-    'plugin' => [
-        'name' => 'wutils',
-        'description' => 'Des outils pour faciliter la création des controlleurs, ajouts de commande twig ainsi que quelques helpers en plus'
-    ],
-    'permissions' => [
-        'some_permission' => 'Some permission'
+    'controllers' => [
+        'title' => 'Gérer'
     ],
     'global' => [
         'cancel' => 'Abandonner',
@@ -47,7 +43,8 @@ return [
         'termined' => 'Terminer',
         'test' => 'test',
         'updated_at' => 'MAJ',
-        'validate' => 'Valider'
+        'validate' => 'Valider',
+        'return' => 'Retour'
     ],
     'import' => [
         'button_import' => 'Importer',
@@ -55,10 +52,25 @@ return [
         'importExcel_comment' => 'Import les élements selectionnez ci dessus. Veuillez enregistrer vos modifications avant import',
         'import_indicator' => 'Import en cours'
     ],
+    'menu' => [
+        'job_list' => 'Liste des taches',
+        'job_list_description' => 'Liste des taches de l\'application',
+        'job_list_s' => 'Taches',
+        'settings_category' => 'Configuration ',
+        'settings_category_model' => 'Gestion des Modèles',
+        'settings_controle' => 'Contrôles'
+    ],
     'page' => [
         'access_denied' => [
             'label' => 'Accès impossible'
         ]
+    ],
+    'permissions' => [
+        'some_permission' => 'Some permission'
+    ],
+    'plugin' => [
+        'description' => 'Des outils pour faciliter la création des controlleurs, ajouts de commande twig ainsi que quelques helpers en plus',
+        'name' => 'wutils'
     ],
     'popup' => [
         'all' => 'Tous',
@@ -85,8 +97,5 @@ return [
     ],
     'validators' => [
         'dimensions_min' => 'le champs  :attribute à une ou plusieurs image trop petites ( Lmin :width Hmin :height )'
-    ],
-    'controllers' => [
-        'title' => 'Gérer'
     ]
 ];

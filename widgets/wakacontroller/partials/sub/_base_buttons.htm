@@ -1,10 +1,21 @@
+<?php if($context == 'update') : ?>
 <button type="submit"
         data-request="onSave"
+        data-request-data="refresh:1"
         data-hotkey="ctrl+s, cmd+s"
         data-load-indicator="<?= e(trans('waka.wutils::lang.global.save_indicator')) ?>"
         class="btn btn-primary">
     <?= e(trans('waka.wutils::lang.global.save')) ?>
 </button>
+<?php else : ?>
+<button type="submit"
+        data-request="onSave"
+        data-hotkey="ctrl+s, cmd+s"
+        data-load-indicator="<?= e(trans('waka.wutils::lang.global.save_indicator')) ?>"
+        class="btn btn-primary">
+    <?= e(trans('waka.wutils::lang.global.create')) ?>
+</button>
+<?php endif  ?>
 <button type="button"
         data-request="onSave"
         data-request-data="close:1"

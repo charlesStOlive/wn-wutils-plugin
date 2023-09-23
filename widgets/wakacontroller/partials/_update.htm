@@ -1,0 +1,33 @@
+<!-- Primary content -->
+<?php Block::put('breadcrumb') ?>
+<?=$this->renderBreadcrump()?>
+<?php Block::endPut() ?>
+<?php Block::put('form-contents') ?>
+<?php if (!$this->fatalError): ?>
+
+<?= Form::open(['class' => 'layout']) ?>
+
+<?= Form::open(['class' => 'layout']) ?>
+
+<div class="layout-row">
+    <?= $this->controller->formRender() ?>
+</div>
+<div class="form-buttons">
+    <div class="loading-indicator-container">
+        <?= $this->renderBar('update') ?>
+    </div>
+</div>
+
+<?= Form::close() ?>
+
+<?php else: ?>
+<div class="control-breadcrumb">
+    <?= Block::placeholder('breadcrumb') ?>
+</div>
+<div class="padded-container">
+    <p class="flash-message static error"><?= e(trans($this->controller->fatalError)) ?></p>
+    <p>
+        <a href="<?= Backend::url($this->backendUrl) ?>" class="btn btn-default">Retour</a>
+    </p>
+</div>
+<?php endif ?>

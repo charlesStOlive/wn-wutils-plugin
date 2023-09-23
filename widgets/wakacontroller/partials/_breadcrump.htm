@@ -11,9 +11,13 @@
             <?= e(trans('waka.wutils::lang.global.settings')) ?>
         </a></li>
     <?php endif ?>
-    <li><a href="<?= Backend::url($breadcrump['indexUrl'] ?? 'Inc') ?>">
-            <?= e(trans($breadcrump['indexlabel'] ?? 'Inc')) ?>
-        </a></li>
+    <?php if($rows = $breadcrump['rows'] ?? false) :  ?>
+    <?php foreach($rows as $row): ?>
+    <li>
+        <a href="<?= Backend::url($row['url'] ?? 'Inc') ?>"><?= e(trans($row['label'] ?? 'Inc')) ?></a>
+    </li>
+    <?php endforeach ?>
+    <?php endif ?>
     <li>
         <?= e(trans($breadcrump['title'] ?? 'Inc')) ?>
     </li>

@@ -1,0 +1,11 @@
+<?php Block::put('breadcrumb') ?>
+    <?=$this->renderBreadcrump()?>
+<?php Block::endPut() ?>
+<?php if (!$this->fatalError): ?>
+    <div class="form-preview">
+        <?= $this->formRenderPreview() ?>
+    </div>
+<?php else: ?>
+    <p class="flash-message static error"><?= e($this->fatalError) ?></p>
+    <p><a href="<?= Backend::url($this->backendUrl) ?>" class="btn btn-default">Retour</a></p>
+<?php endif ?>

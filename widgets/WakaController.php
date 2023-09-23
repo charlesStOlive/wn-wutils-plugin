@@ -6,7 +6,7 @@ use Backend\Classes\WidgetBase;
 use Winter\Storm\Support\Collection;
 use Event;
 
-class Btns extends WidgetBase
+class WakaController extends WidgetBase
 {
     /**
      * @var string A unique alias to identify this widget.
@@ -19,13 +19,14 @@ class Btns extends WidgetBase
     public $fields;
     public $format;
     public $context;
-    public $modelClass;
+    public $backendUrl;
     public $user;
 
     public function prepareComonVars($context)
     {
         
         $this->vars['context'] = $this->context = $context;
+        $this->vars['backendUrl'] = $this->config->backendUrl;
         $this->vars['modelClass'] = $this->modelClass = str_replace('\\', '\\\\', $this->config->modelClass);
         $this->vars['user'] = $this->user = \BackendAuth::getUser();
         $this->model = $this->controller->formGetModel();
@@ -36,20 +37,26 @@ class Btns extends WidgetBase
         $this->prepareComonVars($context);
         $this->vars['mode'] = $mode;
         //Est ce qu'il y a des partials à ajouter à la barre ?
-        $this->vars['partials'] = $this->config->action_bar['partials'] ?? null;
+        $this->vars['partials'] = $this->config->controllerConfig['update']['partials'] ?? null;
         $model = $this->controller->formGetModel();
         $this->vars['modelId'] = $model->id;
-        return $this->makePartial('action_bar');
+        return $this->makePartial('action_bar', ['context' => $context]);
     }
 
     public function renderActionBtn($context = null)
     {
+        //trace_log('renderActionBtn');
         if ($context == 'preview') {
             return null;
         }
         $this->prepareComonVars($context);
-
-        $modifier = Event::until('waka.wutils.btns.replace_action_btn', [$this->model]);
+        
+        $modifier = Event::until('waka.wutils.wakacontroller.replace_action_btn', [$this->model]);
+        $hideDeleteBtn = Event::until('controller.wakacontroller.action_bar.hide_delete', [$this->model]);
+        if($context == 'create') {
+            $hideDeleteBtn = true;
+        }
+        $this->vars['hideDeleteBtn'] = $hideDeleteBtn;
         if($modifier) {
             return $modifier;
         } else {
@@ -60,6 +67,24 @@ class Btns extends WidgetBase
         
     }
 
+    public function renderCreate() {
+        $this->prepareComonVars('create');
+        return $this->makePartial('create');
+    }
+    public function renderPreview() {
+        $this->prepareComonVars('preview');
+        return $this->makePartial('preview');
+    }
+    public function renderUpdate($twoColumns = false) {
+        $this->prepareComonVars('update');
+        if($twoColumns) {
+            return $this->makePartial('update_2col');
+        } else {
+            return $this->makePartial('update');
+        }
+        
+    }
+
     public function renderBreadcrump($context = null)
     {
         $this->prepareComonVars($context);
@@ -67,16 +92,8 @@ class Btns extends WidgetBase
         if (!$model) {
             return;
         }
-        if ($this->config->breadcrump) {
-            $configBreadCrump = $this->config->breadcrump;
-            foreach ($configBreadCrump as $key => $config) {
-                $splitUrl = explode(':', $config);
-                $varInUrl = $splitUrl[1] ?? false;
-                if ($varInUrl) {
-                    $configBreadCrump[$key] = $splitUrl[0] . $model->{$varInUrl};
-                }
-            }
-            $this->vars['breadcrump'] = $configBreadCrump;
+        if ($breadCrump = $this->config->controllerConfig['breadcrump'] ?? false) {
+            $this->vars['breadcrump'] = $breadCrump;
             return $this->makePartial('breadcrump');
         } else {
             return '';
@@ -87,10 +104,16 @@ class Btns extends WidgetBase
     {
         $this->prepareComonVars(null);
         $toolBar = null;
-        $toolBar = $this->config->tool_bar;
+        $toolBar = $this->config->controllerConfig['index'] ?? false;
+        if(!$toolBar) {
+            return;
+        }
         $base = $toolBar['base'] ?? false;
         if ($base) {
             $base = $this->getPermissions($base);
+        }
+        foreach($base as $key => $btn) {
+            $base[$key]['url'] = $base[$key]['url'] ?? $this->config->backendUrl.'/'.$key;
         }
         $this->vars['base'] = $base;
         $this->vars['partials'] = $toolBar['partials'] ?? null;

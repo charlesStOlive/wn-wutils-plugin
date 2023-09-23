@@ -28,7 +28,7 @@ class WakaReorderController extends ControllerBehavior
     /**
      * @var array Configuration values that must exist when applying the primary config file.
      */
-    protected $requiredConfig = ['modelClass'];
+    protected $requiredConfig = ['modelClass', 'reorder'];
 
     /**
      * @var array Visible actions in context of the controller
@@ -49,7 +49,7 @@ class WakaReorderController extends ControllerBehavior
     /**
      * @var string config à utiliser dans la liste childsConfig
      */
-    public $relationConfig = [];
+    public $relationReorder = [];
 
     /**
      * @var string parentid pointe l'id du modèle parent si on réordonne les enfants.
@@ -81,7 +81,7 @@ class WakaReorderController extends ControllerBehavior
     /**
      * @var mixed Configuration for this behaviour
      */
-    public $reorderConfig = 'config_reorder.yaml';
+    public $reorderConfig = 'config_waka.yaml';
 
     /**
      * Behavior constructor
@@ -94,7 +94,7 @@ class WakaReorderController extends ControllerBehavior
         /*
          * Build configuration
          */
-        $this->config = $this->makeConfig($controller->reorderConfig ?: $this->reorderConfig, $this->requiredConfig);
+        $this->config = $this->makeConfig($this->reorderConfig, $this->requiredConfig);
 
         /*
          * Widgets
@@ -106,7 +106,7 @@ class WakaReorderController extends ControllerBehavior
         /*
          * Populate from config
          */
-        $this->nameFrom = $this->getConfig('nameFrom', $this->nameFrom);
+        $this->nameFrom = $this->getReorderConfig('nameFrom') ?? $this->nameFrom;
     }
 
     //
@@ -116,8 +116,8 @@ class WakaReorderController extends ControllerBehavior
     public function reorder()
     {
         $this->addJs('js/winter.reorder.js', 'core');
-        $this->controller->pageTitle = $this->controller->pageTitle
-        ?: Lang::get($this->getConfig('title', 'backend::lang.reorder.default_title'));
+        $lang = $this->getReorderConfig('nameFrom') ?? 'backend::lang.reorder.default_title';
+        $this->controller->pageTitle = $this->controller->pageTitle ?: Lang::get($lang);
         $this->validateModel();
         $this->prepareVars();
     }
@@ -128,17 +128,17 @@ class WakaReorderController extends ControllerBehavior
 
     public function onLoadReorder()
     {
-        $this->relationConfig = post('relationConfig');
+        $this->relationReorder = post('relationReorder');
         $this->parentid = post('manageId');
         $this->vars['manageId'] = $this->parentid;
-        $this->vars['relationConfig'] = $this->relationConfig;
+        $this->vars['relationReorder'] = $this->relationReorder;
         $this->reorder();
         return $this->makePartial('popup');
     }
 
     public function onReorder()
     {
-        $this->relationConfig = post('relationConfig');
+        $this->relationReorder = post('relationReorder');
         $model = $this->validateModel();
         /*
          * Simple
@@ -151,9 +151,8 @@ class WakaReorderController extends ControllerBehavior
                 return;
             }
             $modelId = post('manageId');
-            $relationConfig = post('relationConfig');
-            //trace_log($relationConfig);
-            $config = $this->getConfig('relationConfig')[$this->relationConfig];
+            // $relationReorder = post('relationReorder');
+            $config = $this->getReorderRelationConfig($this->relationReorder);;
             $modelClass = $this->getConfig('modelClass');
             $childClass = $config['childName'];
             $models = $modelClass::find($modelId)->{$childClass};
@@ -168,6 +167,7 @@ class WakaReorderController extends ControllerBehavior
                 (!$ids = post('record_ids')) ||
                 (!$orders = post('sort_orders'))
             ) {
+                trace_log('probleme**************************');
                 return;
             }
 
@@ -206,16 +206,13 @@ class WakaReorderController extends ControllerBehavior
 
      public function onCloseReorder()
         {
-            //trace_log(post());
             $modelId = post('manageId');
-            $relationConfig = post('relationConfig');
-            //trace_log($relationConfig);
+            $relationReorder = post('relationReorder');
             $modelClass = $this->getConfig('modelClass');
             $model = $modelClass::find($modelId);
-            //trace_log($model->name);
             $this->controller->initForm($model);
-            $this->controller->initRelation($model, $relationConfig);
-            return $this->controller->relationRefresh($relationConfig);
+            $this->controller->initRelation($model, $relationReorder);
+            return $this->controller->relationRefresh($relationReorder);
         }
 
     //
@@ -227,7 +224,7 @@ class WakaReorderController extends ControllerBehavior
      */
     protected function prepareVars()
     {
-        $this->vars['relationConfig'] = $this->relationConfig;
+        $this->vars['relationReorder'] = $this->relationReorder;
         $this->vars['reorderRecords'] = $this->getRecords();
         $this->vars['reorderModel'] = $this->model;
         $this->vars['reorderSortMode'] = $this->sortMode;
@@ -240,6 +237,16 @@ class WakaReorderController extends ControllerBehavior
         return $this->reorderMakePartial('container');
     }
 
+    private function getReorderConfig($config) {
+        return $this->getConfig('reorder')[$config] ?? null;
+    }
+
+    private function getReorderRelationConfig($relation) {
+        // trace_log($this->getReorderConfig('reorderRelations'));
+        // trace_log($relation);
+        return $this->getReorderConfig('reorderRelations')[$relation];
+    }
+
     public function reorderGetModel()
     {
         if ($this->model !== null) {
@@ -247,8 +254,8 @@ class WakaReorderController extends ControllerBehavior
             return $this->model;
         }
         
-        if($this->relationConfig) {
-            $config = $this->getConfig('relationConfig')[$this->relationConfig];
+        if($this->relationReorder) {
+            $config = $this->getReorderRelationConfig($this->relationReorder);
             $modelClass = $this->getConfig('modelClass');
             $childClass = $config['childName'];
             $this->nameFrom = $config['nameFrom'];
@@ -320,9 +327,9 @@ class WakaReorderController extends ControllerBehavior
         $query = $model->newQuery();
         
 
-        if($this->relationConfig) {
+        if($this->relationReorder) {
             $model = $this->controller->reorderGetModel();
-            $config = $this->getConfig('relationConfig')[$this->relationConfig];
+            $config = $this->getReorderRelationConfig($this->relationReorder);;
             $modelClass = $this->getConfig('modelClass');
             $childClass = $config['childName'];;
             $query = $modelClass::find($this->parentid)->{$childClass}();
@@ -366,14 +373,14 @@ class WakaReorderController extends ControllerBehavior
 
     protected function makeToolbarWidget()
     {
-        if ($toolbarConfig = $this->getConfig('toolbar')) {
-            $toolbarConfig = $this->makeConfig($toolbarConfig);
-            $toolbarWidget = $this->makeWidget('Backend\Widgets\Toolbar', $toolbarConfig);
+        if(post('relationReorder')) {
+            //les relations sont dans un widget pas besoin de toolbar
+            return;
         }
-        else {
-            $toolbarWidget = null;
-        }
-
+        $toolbarConfig = [];
+        $this->vars['backendUrl'] = $this->config->backendUrl;
+        $toolbarConfig['buttons'] = '~/plugins/waka/wutils/behaviors/wakareordercontroller/partials/_toolbar.php';
+        $toolbarWidget = $this->makeWidget('Backend\Widgets\Toolbar', $toolbarConfig);
         return $toolbarWidget;
     }
 

@@ -48,8 +48,11 @@ class Plugin extends PluginBase
 
 
         \Event::listen('backend.page.beforeDisplay', function ($controller, $action, $params) {
-            $controller->addJs('/plugins/waka/wutils/assets/js/froala.js');
-            $controller->addJs('/plugins/waka/wutils/assets/js/clipboard.min.js');
+            // $controller->addJs('/plugins/waka/wutils/assets/js/froala.js');
+            // $controller->addJs('/plugins/waka/wutils/assets/js/clipboard.min.js');
+            //
+            $controller->addCss('/plugins/waka/wutils/assets/css/collapser.css');
+            $controller->addJs('/plugins/waka/wutils/assets/js/collapser.js');
             /**NODS-C*/$controller->addCss('/plugins/wcli/wconfig/assets/css/waka.css');
             $env = \Config::get("waka.wutils::env");
             //trace_log('env : '.$env);
@@ -89,9 +92,6 @@ class Plugin extends PluginBase
             }
             if (!Settings::get('activate_cms')) {
                 $navigationManager->removeMainMenuItem('October.Cms', 'cms');
-            }
-            if (!Settings::get('activate_builder')) {
-                $navigationManager->removeMainMenuItem('RainLab.Builder', 'builder');
             }
             if (!Settings::get('activate_user_btn')) {
                 $navigationManager->removeMainMenuItem('RainLab.User', 'user');
