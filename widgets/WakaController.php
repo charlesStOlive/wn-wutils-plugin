@@ -24,7 +24,7 @@ class WakaController extends WidgetBase
 
     public function prepareComonVars($context)
     {
-        
+
         $this->vars['context'] = $this->context = $context;
         $this->vars['backendUrl'] = $this->config->backendUrl;
         $this->vars['modelClass'] = $this->modelClass = str_replace('\\', '\\\\', $this->config->modelClass);
@@ -50,39 +50,39 @@ class WakaController extends WidgetBase
             return null;
         }
         $this->prepareComonVars($context);
-        
+
         $modifier = Event::until('waka.wutils.wakacontroller.replace_action_btn', [$this->model]);
         $hideDeleteBtn = Event::until('controller.wakacontroller.action_bar.hide_delete', [$this->model]);
-        if($context == 'create') {
+        if ($context == 'create') {
             $hideDeleteBtn = true;
         }
         $this->vars['hideDeleteBtn'] = $hideDeleteBtn;
-        if($modifier) {
+        if ($modifier) {
             return $modifier;
         } else {
             return $this->makePartial('sub/base_buttons');
             // return $this->makePartial('sub/base_buttons');
         }
-        
-        
     }
 
-    public function renderCreate() {
+    public function renderCreate()
+    {
         $this->prepareComonVars('create');
         return $this->makePartial('create');
     }
-    public function renderPreview() {
+    public function renderPreview()
+    {
         $this->prepareComonVars('preview');
         return $this->makePartial('preview');
     }
-    public function renderUpdate($twoColumns = false) {
+    public function renderUpdate($twoColumns = false)
+    {
         $this->prepareComonVars('update');
-        if($twoColumns) {
+        if ($twoColumns) {
             return $this->makePartial('update_2col');
         } else {
             return $this->makePartial('update');
         }
-        
     }
 
     public function renderBreadcrump($context = null)
@@ -92,8 +92,20 @@ class WakaController extends WidgetBase
         if (!$model) {
             return;
         }
+
         if ($breadCrump = $this->config->controllerConfig['breadcrump'] ?? false) {
+            if (isset($breadCrump['rows']) && is_array($breadCrump['rows'])) {
+                foreach ($breadCrump['rows'] as $key => &$row) {
+                    if (preg_match('/:(\w+)/', $row['url'], $matches)) {
+                        $paramName = $matches[1]; // Extract the parameter name, e.g., "id", "projet_id", etc.
+                        $row['url'] = str_replace(':' . $paramName, $model->$paramName, $row['url']);
+                        trace_log($row['url']);
+                    }
+                }
+            }
+
             $this->vars['breadcrump'] = $breadCrump;
+            trace_log($breadCrump);
             return $this->makePartial('breadcrump');
         } else {
             return '';
@@ -105,15 +117,15 @@ class WakaController extends WidgetBase
         $this->prepareComonVars(null);
         $toolBar = null;
         $toolBar = $this->config->controllerConfig['index'] ?? false;
-        if(!$toolBar) {
+        if (!$toolBar) {
             return;
         }
         $base = $toolBar['base'] ?? false;
         if ($base) {
             $base = $this->getPermissions($base);
         }
-        foreach($base as $key => $btn) {
-            $base[$key]['url'] = $base[$key]['url'] ?? $this->config->backendUrl.'/'.$key;
+        foreach ($base as $key => $btn) {
+            $base[$key]['url'] = $base[$key]['url'] ?? $this->config->backendUrl . '/' . $key;
         }
         $this->vars['base'] = $base;
         $this->vars['partials'] = $toolBar['partials'] ?? null;
@@ -131,7 +143,7 @@ class WakaController extends WidgetBase
             if (!$permission) {
                 $permissionGranted = true;
             } else {
-                $permissionGranted = $this->user->hasAccess($permission,false);
+                $permissionGranted = $this->user->hasAccess($permission, false);
             }
             //trace_log($btn);
             $btn['permissions']  = $permissionGranted;

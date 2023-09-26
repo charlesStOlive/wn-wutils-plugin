@@ -1,7 +1,7 @@
 <div>
     <button type="button"
             style="margin-left: auto;"
-            class="oc-icon-backward btn-icon  pull-right"
+            class="oc-icon-backward btn-icon pull-right"
             onclick="history.go(-1); return false">
     </button>
 </div>
@@ -11,6 +11,7 @@
             <?= e(trans('waka.wutils::lang.global.settings')) ?>
         </a></li>
     <?php endif ?>
+
     <?php if($rows = $breadcrump['rows'] ?? false) :  ?>
     <?php foreach($rows as $row): ?>
     <li>
@@ -18,6 +19,7 @@
     </li>
     <?php endforeach ?>
     <?php endif ?>
+
     <li>
         <?= e(trans($breadcrump['title'] ?? 'Inc')) ?>
     </li>
