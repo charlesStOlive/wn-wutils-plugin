@@ -167,7 +167,7 @@ class WakaReorderController extends ControllerBehavior
                 (!$ids = post('record_ids')) ||
                 (!$orders = post('sort_orders'))
             ) {
-                trace_log('probleme**************************');
+                //trace_log('probleme**************************');
                 return;
             }
 

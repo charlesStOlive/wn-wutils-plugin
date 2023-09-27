@@ -99,13 +99,13 @@ class WakaController extends WidgetBase
                     if (preg_match('/:(\w+)/', $row['url'], $matches)) {
                         $paramName = $matches[1]; // Extract the parameter name, e.g., "id", "projet_id", etc.
                         $row['url'] = str_replace(':' . $paramName, $model->$paramName, $row['url']);
-                        trace_log($row['url']);
+                        //trace_log($row['url']);
                     }
                 }
             }
 
             $this->vars['breadcrump'] = $breadCrump;
-            trace_log($breadCrump);
+            //trace_log($breadCrump);
             return $this->makePartial('breadcrump');
         } else {
             return '';
