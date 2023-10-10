@@ -51,8 +51,8 @@ class Plugin extends PluginBase
             // $controller->addJs('/plugins/waka/wutils/assets/js/froala.js');
             // $controller->addJs('/plugins/waka/wutils/assets/js/clipboard.min.js');
             //
-            $controller->addCss('/plugins/waka/wutils/assets/css/collapser.css');
-            $controller->addJs('/plugins/waka/wutils/assets/js/collapser.js');
+            // $controller->addCss('/plugins/waka/wutils/assets/css/collapser.css');
+            // $controller->addJs('/plugins/waka/wutils/assets/js/collapser.js');
             /**NODS-C*/$controller->addCss('/plugins/wcli/wconfig/assets/css/waka.css');
             $env = \Config::get("waka.wutils::env");
             //trace_log('env : '.$env);
@@ -156,6 +156,18 @@ class Plugin extends PluginBase
             }
         });
 
+        \Validator::replacer('dimensions_min', function ($message, $attribute, $rule, $parameters) {
+            //trace_log($parameters);
+            return \Lang::get('waka.wutils::lang.validators.dimensions_min', ['attribute' => $attribute, 'width' => $parameters[0],  'height' => $parameters[0]]);
+        });
+    }
+
+
+    public function registerValidationRules()
+    {
+        return [
+            'dimensions_min' => \Waka\Wutils\Classes\Validators\DimensionsMin::class,
+        ];
     }
 
     /**

@@ -53,6 +53,7 @@ class WakaController extends WidgetBase
 
         $modifier = Event::until('waka.wutils.wakacontroller.replace_action_btn', [$this->model]);
         $hideDeleteBtn = Event::until('controller.wakacontroller.action_bar.hide_delete', [$this->model]);
+        //trace_log('$hideDeleteBtn!!',$hideDeleteBtn);
         if ($context == 'create') {
             $hideDeleteBtn = true;
         }
@@ -75,9 +76,10 @@ class WakaController extends WidgetBase
         $this->prepareComonVars('preview');
         return $this->makePartial('preview');
     }
-    public function renderUpdate($twoColumns = false)
+    public function renderUpdate($twoColumns = false, $showSecondaryTabs = false)
     {
         $this->prepareComonVars('update');
+        $this->vars['showTabs'] = $showSecondaryTabs;
         if ($twoColumns) {
             return $this->makePartial('update_2col');
         } else {
