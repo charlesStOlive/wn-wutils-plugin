@@ -11,7 +11,7 @@
         
         <?php if($base['delete']['show'] ?? false ) : ?>
             <?php if($base['delete']['permissions']) : ?>
-                <button class="btn btn-danger oc-icon-trash-o"
+                <button class="btn btn-danger wn-icon-trash-o"
                         disabled="disabled"
                         onclick="$(this).data('request-data', { checked: $('.control-list').listWidget('getChecked') })"
                         data-request="onDelete"
@@ -28,7 +28,7 @@
         <?php if($base['reorder']['show'] ?? false) : ?>
             <?php if($base['reorder']['permissions']) : ?>
                 <a href="<?= Backend::url($base['reorder']['url'] ?? '#') ?>"
-                class="btn btn-default oc-icon-bars">
+                class="btn btn-default wn-icon-bars">
                     <?= e(trans('waka.wutils::lang.global.reorder')) ?>
                 </a>
             <?php endif ?>

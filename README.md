@@ -11,6 +11,6 @@ index:
             permissions: [wcli.crpf.*]
             # label: wcli.crpf::lang.models.afl.create_from_letter
             # url: wcli/crpf/aflscomites/create
-            # icon: oc-wicon-pencil2
+            # icon: wn-icon-pen
             # class: btn-secondary
 ```
