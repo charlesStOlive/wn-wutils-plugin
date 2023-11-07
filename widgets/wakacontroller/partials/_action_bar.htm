@@ -1,10 +1,12 @@
 <div class="w-actionbar">
     <?= $this->renderActionBtn($context) ?>
-    <?= $this->fireViewEvent('waka_controller.action_bar.before_partial', [$context]) ?>
+    
     <?php if ($partials) : ?>
         <?php foreach ($partials as $partial) : ?>
             <?= $this->makePartial($partial['url']); ?>
         <?php endforeach ?>
     <?php endif ?>
+
+    <?= $this->fireViewEvent('waka_controller.action_bar.before_partial', [$context]) ?>
 </div>
 <?= $this->makePartial('sub/btn_delete'); ?>

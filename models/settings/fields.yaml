@@ -4,21 +4,6 @@ tabs:
                   type: partial
                   tab: tests
                   path: $/waka/wutils/partials/_wconfig_tests.htm
-            start_imports:
-                  label: Imports
-                  type: checkboxlist
-                  quickselect: true 
-                  options: listStartImports
-                  tab: Imports
-            start_file:
-                  label: Fichiers source
-                  type: mediafinder
-                  mode: file
-                  tab: Imports
-            _launch_import:
-                  type: partial
-                  tab: Imports
-                  path: $/waka/wutils/partials/_wconfig_import.htm
             activate_dashboard:
                   label: waka.wutils::lang.settings.activate_dashboard
                   type: switch

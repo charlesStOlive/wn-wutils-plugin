@@ -8,11 +8,7 @@
                 </a>
             <?php endif ?>
         <?php endif ?>
-        <?php if($partials) : ?>
-            <?php foreach($partials as $partial) : ?>
-                <?= $this->makePartial($partial['url']);?>
-            <?php endforeach ?>
-        <?php endif ?>
+        
         <?php if($base['delete']['show'] ?? false ) : ?>
             <?php if($base['delete']['permissions']) : ?>
                 <button class="btn btn-danger oc-icon-trash-o"
@@ -39,6 +35,11 @@
         <?php endif ?>
     </div>
     <div>
+        <?php if($partials) : ?>
+        <?php foreach($partials as $partial) : ?>
+            <?= $this->makePartial($partial['url']);?>
+        <?php endforeach ?>
+        <?php endif ?>
     <?php $context = 'index'?>
        <?= $this->fireViewEvent('waka_controller.index_bar.after_partial') ?> 
     </div>

@@ -21,6 +21,7 @@ return [
         'updated_at' => 'Mis à jour le',
         'validate' => 'Valider',
         'global' => 'Global',
+        'confirm' => 'Confirmer',
     ],
     'import' => [
         'button_import' => 'Importer',
@@ -29,8 +30,9 @@ return [
         'import_indicator' => 'Importation en cours',
     ],
     'menu' => [
-        'settings_category' => 'Configuration',
-        'settings_category_model' => 'Gestion des Modèles',
+        'config_category' => 'Configuration',
+        'model_category' => 'Gestion des Modèles',
+        'model_tasks' => 'Tâches',
     ],
     'plugin' => [
         'description' => 'Des outils pour faciliter la création des contrôleurs, ajout de commandes Twig ainsi que quelques helpers supplémentaires',
@@ -55,5 +57,10 @@ return [
     ],
     'duplicateBehavior' => [
         'title' => 'Dupliquer',
+    ],
+    'page' => [
+        'access_denied' => [
+            'label' => 'Accès impossible',
+        ],
     ],
 ];

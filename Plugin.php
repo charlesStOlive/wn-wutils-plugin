@@ -105,7 +105,7 @@ class Plugin extends PluginBase
         });
 
          \System\Controllers\Settings::extend(function ($controller) {
-            if (url()->current() === Backend\Facades\Backend::url('system/settings')) {
+            if (url()->current() === \Backend::url('system/settings')) {
                 return;
             }
             if ($controller->formGetWidget()->model instanceof \Waka\Wutils\Models\Settings) {
@@ -113,15 +113,6 @@ class Plugin extends PluginBase
                 if (!$user->isSuperUser()) {
                     return;
                 }
-                $controller->addDynamicMethod('onWconfigImport', function () use ($controller) {
-                    $startFile = \Waka\Wutils\Models\Settings::get('start_file');
-                    if ($startFile) {
-                        \Excel::import(new \Waka\ImportExport\Classes\Imports\SheetsImport, storage_path('app/media/' . $startFile));
-                    } else {
-                        throw new \ApplicationException('Le fichier n a pas été trouvé');
-                    }
-                    return \Redirect::refresh();
-                });
                 //trace_log('classe existe ? '.class_exists('\Wcli\Wconfig\Classes\Tests'));
                 if (class_exists('\Wcli\Wconfig\Classes\Tests')) {
                     //trace_log('classe existe');
@@ -361,7 +352,7 @@ class Plugin extends PluginBase
             'utils_settings' => [
                 'label' => Lang::get('waka.wutils::lang.settings.label'),
                 'description' => Lang::get('waka.wutils::lang.settings.description'),
-                'category' => Lang::get('waka.wutils::lang.menu.settings_category'),
+                'category' => Lang::get('waka.wutils::lang.menu.model_tasks'),
                 'icon' => 'icon-wrench',
                 'class' => 'Waka\Wutils\Models\Settings',
                 'order' => 150,

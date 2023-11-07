@@ -21,6 +21,7 @@ class WakaController extends WidgetBase
     public $context;
     public $backendUrl;
     public $user;
+    public $callout;
 
     public function prepareComonVars($context)
     {
@@ -152,5 +153,19 @@ class WakaController extends WidgetBase
             $btnWithPermission[$key] = $btn;
         }
         return $btnWithPermission;
+    }
+
+    public function renderCallOut()
+    {
+        $hints = Event::fire('controller.wakacontroller.get_call_out', [$this->model]);
+        //C'est la reception d'un evenement on peut potentiellement en recevoir plusieurs, je prend le premier. 
+        if ($hint = $hints[0] ?? false) {
+            $this->vars['hint_title'] = $hint['title'] ?? 'Info';
+            $this->vars['hint_content'] = \Lang::get($hint['content']);
+            $this->vars['hint_type'] = $hint['type'] ?? 'info';
+            return $this->makePartial('callout');
+        } else {
+            return null;
+        }
     }
 }

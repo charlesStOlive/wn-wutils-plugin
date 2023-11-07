@@ -3,7 +3,7 @@
 <?php Block::endPut() ?>
 <?php if (!$this->fatalError): ?>
     <div class="form-preview">
-        <?= $this->formRenderPreview() ?>
+        <?= $this->controller->formRenderPreview() ?>
     </div>
 <?php else: ?>
     <p class="flash-message static error"><?= e($this->fatalError) ?></p>

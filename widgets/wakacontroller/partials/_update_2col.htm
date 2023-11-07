@@ -14,6 +14,7 @@
         <?php if ($this->controller->formHasPrimaryTabs()) : ?>
             <?= $this->controller->formRender(['section' => 'primary']) ?>
         <?php endif ?>
+        <?=$this->renderCallout(); ?>
     </div>
     <div class="form-buttons">
         <div class="loading-indicator-container">
