@@ -1,0 +1,8 @@
+files:
+    spatiebu:
+        title: Module Wutils
+        category_slug: "modules"
+        comment: "Behavior et trait de utils"
+        permissions: waka.docser.modules
+        relativePath: waka/wutils/docs
+        sort_order: 1000

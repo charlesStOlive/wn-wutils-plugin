@@ -88,7 +88,7 @@ class WakaController extends WidgetBase
         }
     }
 
-    public function renderBreadcrump($context = null)
+    public function renderBreadcrumb($context = null)
     {
         $this->prepareComonVars($context);
         $model = $this->controller->formGetModel();
@@ -96,9 +96,9 @@ class WakaController extends WidgetBase
             return;
         }
 
-        if ($breadCrump = $this->config->controllerConfig['breadcrump'] ?? false) {
-            if (isset($breadCrump['rows']) && is_array($breadCrump['rows'])) {
-                foreach ($breadCrump['rows'] as $key => &$row) {
+        if ($breadcrumb = $this->config->controllerConfig['breadcrumb'] ?? false) {
+            if (isset($breadcrumb['rows']) && is_array($breadcrumb['rows'])) {
+                foreach ($breadcrumb['rows'] as $key => &$row) {
                     if (preg_match('/:(\w+)/', $row['url'], $matches)) {
                         $paramName = $matches[1]; // Extract the parameter name, e.g., "id", "projet_id", etc.
                         $row['url'] = str_replace(':' . $paramName, $model->$paramName, $row['url']);
@@ -107,9 +107,9 @@ class WakaController extends WidgetBase
                 }
             }
 
-            $this->vars['breadcrump'] = $breadCrump;
-            //trace_log($breadCrump);
-            return $this->makePartial('breadcrump');
+            $this->vars['breadcrumb'] = $breadcrumb;
+            //trace_log($breadcrumb);
+            return $this->makePartial('breadcrumb');
         } else {
             return '';
         }

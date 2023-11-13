@@ -7,7 +7,7 @@ use Session;
 trait WakAnonymize
 {
 
-    public $anonymizeText = "Anonimisé";
+    public $anonymizeText = "_x_";
 
     //public $anoymizeFields = [];
 
@@ -33,7 +33,7 @@ trait WakAnonymize
                     $field->delete();
                 }
             } elseif (is_array($this->$field)) {
-                $this->$field = [$this->anonymizeText];
+                $this->$field = [];
             } else {
                 $this->$field = $this->anonymizeText;
             }

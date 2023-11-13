@@ -1,11 +1,11 @@
 <ul>
-    <?php if($breadcrump['inSettings'] ?? false) :  ?>
+    <?php if($breadcrumb['inSettings'] ?? false) :  ?>
     <li><a href="<?= Backend::url('system/settings/') ?>">
             <?= e(trans('waka.wutils::lang.global.settings')) ?>
         </a></li>
     <?php endif ?>
 
-    <?php if($rows = $breadcrump['rows'] ?? false) :  ?>
+    <?php if($rows = $breadcrumb['rows'] ?? false) :  ?>
     <?php foreach($rows as $row): ?>
     <li>
         <a href="<?= Backend::url($row['url'] ?? 'Inc') ?>"><?= e(trans($row['label'] ?? 'Inc')) ?></a>
@@ -14,6 +14,6 @@
     <?php endif ?>
 
     <li>
-        <?= e(trans($breadcrump['title'] ?? 'Inc')) ?>
+        <?= e(trans($breadcrumb['title'] ?? 'Inc')) ?>
     </li>
 </ul>
