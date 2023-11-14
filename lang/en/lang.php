@@ -1,15 +1,20 @@
 <?php
 
 return [
+    'duplicateBehavior' => [
+        'title' => 'Duplicate',
+    ],
     'global' => [
         'cancel' => 'Cancel',
+        'close' => 'Close',
+        'confirm' => 'Confirm',
         'create' => 'Create',
+        'created_at' => 'Created on',
         'delete_confirm' => 'Do you really want to delete the selection?',
         'delete_selected' => 'Delete selected',
-        'duplicate' => 'Duplicate',
         'placeholder' => '-- Choose --',
-        'placeholder_model' => '-- Choose a model --',
         'placeholder_w' => '-- Change state --',
+        'please_wait' => 'Please wait',
         'reorder' => 'Reorder',
         'return' => 'Return',
         'save' => 'Save',
@@ -20,8 +25,6 @@ return [
         'termined' => 'Complete',
         'updated_at' => 'Updated on',
         'validate' => 'Validate',
-        'global' => 'Global',
-        'confirm' => 'Confirm',
     ],
     'import' => [
         'button_import' => 'Import',
@@ -30,11 +33,17 @@ return [
         'import_indicator' => 'Import in progress',
     ],
     'menu' => [
-        'settings_category' => 'Configuration',
-        'settings_category_model' => 'Model Management',
+        'config_category' => 'Configuration',
+        'model_category' => 'Model Management',
+        'model_tasks' => 'Tasks',
+    ],
+    'page' => [
+        'access_denied' => [
+            'label' => 'Access denied',
+        ],
     ],
     'plugin' => [
-        'description' => 'Tools to facilitate the creation of controllers, addition of Twig commands as well as some additional helpers',
+        'description' => 'Tools to facilitate the creation of controllers, add Twig commands, and some additional helpers',
         'name' => 'wutils',
     ],
     'rules' => [
@@ -42,19 +51,19 @@ return [
         'prompt_share' => 'Add a shared block',
     ],
     'settings' => [
-        'activate_builder' => 'Activate the Builder button',
-        'activate_cms' => 'Activate the CMS button',
-        'activate_dashboard' => 'Activate the Dashboard button',
-        'activate_media_btn' => 'Activate the Media button',
-        'activate_task_btn' => 'Activate the dynamic tasks button',
-        'activate_user_btn' => 'Activate the Users button',
+        'activate_builder' => 'Activate Builder button',
+        'activate_cms' => 'Activate CMS button',
+        'activate_dashboard' => 'Activate Dashboard button',
+        'activate_media_btn' => 'Activate Media button',
+        'activate_task_btn' => 'Activate dynamic task button',
+        'activate_user_btn' => 'Activate Users button',
         'description' => 'Hide elements',
         'label' => 'Utilities',
     ],
+    'side_bar_info' => [
+        'update' => 'Update',
+    ],
     'validators' => [
         'dimensions_min' => 'The :attribute field has one or more images that are too small (Min width :width, Min height :height)',
-    ],
-    'duplicateBehavior' => [
-        'title' => 'Duplicate',
     ],
 ];

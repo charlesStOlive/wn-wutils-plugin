@@ -1,15 +1,20 @@
 <?php
 
 return [
+    'duplicateBehavior' => [
+        'title' => 'Dupliquer',
+    ],
     'global' => [
         'cancel' => 'Annuler',
+        'close' => 'Fermer',
+        'confirm' => 'Confirmer',
         'create' => 'Créer',
+        'created_at' => 'Crée le',
         'delete_confirm' => 'Voulez-vous vraiment supprimer la sélection ?',
         'delete_selected' => 'Supprimer la sélection',
-        'duplicate' => 'Dupliquer',
         'placeholder' => '-- Choisissez --',
-        'placeholder_model' => '-- Choisissez un modèle --',
         'placeholder_w' => '-- Changez d\'état --',
+        'please_wait' => 'Veuillez patienter',
         'reorder' => 'Réordonner',
         'return' => 'Retour',
         'save' => 'Enregistrer',
@@ -20,8 +25,6 @@ return [
         'termined' => 'Terminer',
         'updated_at' => 'Mis à jour le',
         'validate' => 'Valider',
-        'global' => 'Global',
-        'confirm' => 'Confirmer',
     ],
     'import' => [
         'button_import' => 'Importer',
@@ -33,6 +36,11 @@ return [
         'config_category' => 'Configuration',
         'model_category' => 'Gestion des Modèles',
         'model_tasks' => 'Tâches',
+    ],
+    'page' => [
+        'access_denied' => [
+            'label' => 'Accès impossible',
+        ],
     ],
     'plugin' => [
         'description' => 'Des outils pour faciliter la création des contrôleurs, ajout de commandes Twig ainsi que quelques helpers supplémentaires',
@@ -52,15 +60,10 @@ return [
         'description' => 'Masquer des éléments',
         'label' => 'Utilitaires',
     ],
+    'side_bar_info' => [
+        'update' => 'Update',
+    ],
     'validators' => [
         'dimensions_min' => 'Le champ :attribute a une ou plusieurs images trop petites (Lmin :width, Hmin :height)',
-    ],
-    'duplicateBehavior' => [
-        'title' => 'Dupliquer',
-    ],
-    'page' => [
-        'access_denied' => [
-            'label' => 'Accès impossible',
-        ],
     ],
 ];

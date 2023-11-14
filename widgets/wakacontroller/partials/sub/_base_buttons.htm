@@ -4,7 +4,7 @@
         data-request-data="refresh:1"
         data-hotkey="ctrl+s, cmd+s"
         data-load-indicator="<?= e(trans('waka.wutils::lang.global.save_indicator')) ?>"
-        class="btn btn-primary">
+        class="btn btn-primary wn-icon-floppy-disk">
     <?= e(trans('waka.wutils::lang.global.save')) ?>
 </button>
 <?php else : ?>
@@ -12,7 +12,7 @@
         data-request="onSave"
         data-hotkey="ctrl+s, cmd+s"
         data-load-indicator="<?= e(trans('waka.wutils::lang.global.save_indicator')) ?>"
-        class="btn btn-primary">
+        class="btn btn-primary wn-icon-plus">
     <?= e(trans('waka.wutils::lang.global.create')) ?>
 </button>
 <?php endif  ?>
@@ -21,6 +21,6 @@
         data-request-data="close:1"
         data-hotkey="ctrl+enter, cmd+enter"
         data-load-indicator="<?= e(trans('waka.wutils::lang.global.save_indicator')) ?>"
-        class="btn btn-default">
+        class="btn btn-default wn-icon-plus">
     <?= e(trans('waka.wutils::lang.global.save_close')) ?>
 </button>
