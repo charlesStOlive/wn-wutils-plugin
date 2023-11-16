@@ -82,11 +82,20 @@ class CleanFiles extends Command
         $validFiles = FileModel::pluck('disk_name')->all();
         $uploadsPath = Config::get('filesystems.disks.local.root', storage_path('app')) . '/' . Config::get('cms.storage.uploads.folder', 'uploads');
 
+        $exluedDir = [
+            storage_path('app/uploads/tempproductor'),
+        ];
+
         // Recursive function to scan the directory for files and ensure they exist in system_files.
-        $purgeFunc = function ($targetDir) use (&$purgeFunc, &$totalCount, $uploadsPath, $validFiles, $daysHour,$daysWeek, $daysMonth ) {
+        $purgeFunc = function ($targetDir) use (&$purgeFunc, &$totalCount, $uploadsPath, $validFiles, $daysHour,$daysWeek, $daysMonth, $exluedDir ) {
             if ($files = File::glob($targetDir.'/*')) {
                 if ($dirs = File::directories($targetDir)) {
                     foreach ($dirs as $dir) {
+                        trace_log($dir);
+                        if(in_array($dir,  $exluedDir)) {
+                            trace_log('on ne touche pas a tempproductor');
+                            continue;
+                        }
                         $purgeFunc($dir);
 
                         if (File::isDirectoryEmpty($dir) && is_writeable($dir)) {

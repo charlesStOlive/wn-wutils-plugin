@@ -50,14 +50,9 @@ class Plugin extends PluginBase
         \Event::listen('backend.page.beforeDisplay', function ($controller, $action, $params) {
             // $controller->addJs('/plugins/waka/wutils/assets/js/froala.js');
             // $controller->addJs('/plugins/waka/wutils/assets/js/clipboard.min.js');
-            //
-            // $controller->addCss('/plugins/waka/wutils/assets/css/collapser.css');
-            // $controller->addJs('/plugins/waka/wutils/assets/js/collapser.js');
             /**NODS-C*/$controller->addCss('/plugins/wcli/wconfig/assets/css/waka.css');
             $env = \Config::get("waka.wutils::env");
-            //trace_log('env : '.$env);
             if ($env == 'local') {
-                //trace_log('local');
                 $controller->addCss('/plugins/waka/wutils/assets/css/menu_env_local_2.css');
             } else if ($env == 'dev') {
                 $controller->addCss('/plugins/waka/wutils/assets/css/menu_env_dev_2.css');
@@ -161,35 +156,12 @@ class Plugin extends PluginBase
         ];
     }
 
-    /**
-     * Registers any frontend components implemented in this plugin.
-     */
-    public function registerComponents(): array
-    {
-        return []; // Remove this line to activate
-
-        return [
-            'Waka\Wutils\Components\MyComponent' => 'myComponent',
-        ];
-    }
-
     public function registerMarkupTags()
     {
         return [
             'filters' => [
                 'reTwig' => function ($twig, $drowDta, $rowDs) {
                     return \Twig::parse($twig, ['row' => $drowDta, 'ds' => $rowDs]);
-                },
-                'mailto' => function ($twig) {
-                    $text = '';
-                    if (preg_match_all('/[\p{L}0-9_.-]+@[0-9\p{L}.-]+\.[a-z.]{2,6}\b/u', $twig, $mails)) {
-                        foreach ($mails[0] as $mail) {
-                            $text = str_replace($mail, '<a href="mailto:' . $mail . '">' . $mail . '</a>', $text);
-                        }
-                        return $text;
-                    } else {
-                        return '';
-                    }
                 },
                 'localeDate' => [new \Waka\Wutils\Classes\WakaDate, 'localeDate'],
                 'uppercase' => function ($string) {
@@ -206,9 +178,6 @@ class Plugin extends PluginBase
                 },
                 'toJson' => function ($twig) {
                     return json_encode($twig);
-                },
-                'workflow' => function ($twig) {
-                    return $twig->wfPlaceLabel();
                 },
                 'camelCase' => function ($twig) {
                     return camel_case($twig);
@@ -333,14 +302,6 @@ class Plugin extends PluginBase
                 return $value;
             },
         ];
-    }
-
-    /**
-     * Registers any backend permissions used by this plugin.
-     */
-    public function registerPermissions(): array
-    {
-        return []; // Remove this line to activate
     }
 
     /**
