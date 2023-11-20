@@ -91,9 +91,9 @@ class CleanFiles extends Command
             if ($files = File::glob($targetDir.'/*')) {
                 if ($dirs = File::directories($targetDir)) {
                     foreach ($dirs as $dir) {
-                        trace_log($dir);
+                        //trace_log($dir);
                         if(in_array($dir,  $exluedDir)) {
-                            trace_log('on ne touche pas a tempproductor');
+                            //trace_log('on ne touche pas a tempproductor');
                             continue;
                         }
                         $purgeFunc($dir);
