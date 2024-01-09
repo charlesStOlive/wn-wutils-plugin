@@ -1,4 +1,6 @@
-<?php namespace Waka\Wutils;
+<?php
+
+namespace Waka\Wutils;
 
 use Backend;
 use Backend\Models\UserRole;
@@ -50,7 +52,7 @@ class Plugin extends PluginBase
         \Event::listen('backend.page.beforeDisplay', function ($controller, $action, $params) {
             // $controller->addJs('/plugins/waka/wutils/assets/js/froala.js');
             // $controller->addJs('/plugins/waka/wutils/assets/js/clipboard.min.js');
-            /**NODS-C*/$controller->addCss('/plugins/wcli/wconfig/assets/css/waka.css');
+            /**NODS-C*/ $controller->addCss('/plugins/wcli/wconfig/assets/css/waka.css');
             $env = \Config::get("waka.wutils::env");
             if ($env == 'local') {
                 $controller->addCss('/plugins/waka/wutils/assets/css/menu_env_local_2.css');
@@ -59,16 +61,25 @@ class Plugin extends PluginBase
             }
         });
 
+        \Event::listen('backend.formwidgets.fileupload.onUpload', function ($mediaWidget, $file) {
+            $maxSize = $mediaWidget->getConfig('maxSize');
+            if (!$maxSize) {
+                return;
+            }
+            return \Waka\Wutils\Classes\ImageUploadOptimiser::reduceUploadedSize($file, $maxSize);
+        });
+
+
         $this->registerConsoleCommand('waka:cleanModels', 'Waka\Wutils\Console\CleanModels');
         $this->registerConsoleCommand('waka:cleanFiles', 'Waka\Wutils\Console\CleanFiles');
         $this->registerConsoleCommand('waka:ReduceImages', 'Waka\Wutils\Console\ReduceImages');
-        
+
         //
 
     }
 
 
-    
+
 
     /**
      * Boot method, called right before the request route.
@@ -99,7 +110,7 @@ class Plugin extends PluginBase
             }
         });
 
-         \System\Controllers\Settings::extend(function ($controller) {
+        \System\Controllers\Settings::extend(function ($controller) {
             if (url()->current() === \Backend::url('system/settings')) {
                 return;
             }
