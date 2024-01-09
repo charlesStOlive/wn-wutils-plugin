@@ -33,7 +33,7 @@
     <!-- Layout execution -->
     <?php Block::put('body') ?>
     <?= Form::open(['class' => 'layout stretch']) ?>
-    <?= $this->controller->makeLayout('form-with-sidebar') ?>
+    <?= $this->controller->makeLayout($wakaLayout) ?>
     <?= Form::close() ?>
     <?php Block::endPut() ?>
 

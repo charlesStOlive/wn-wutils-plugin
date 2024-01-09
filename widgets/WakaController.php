@@ -77,12 +77,16 @@ class WakaController extends WidgetBase
         $this->prepareComonVars('preview');
         return $this->makePartial('preview');
     }
-    public function renderUpdate($twoColumns = false, $showSecondaryTabs = false)
+    public function renderUpdate($twoColumnsOrTemplate = false, $showSecondaryTabs = false)
     {
         $this->prepareComonVars('update');
         $this->vars['showTabs'] = $showSecondaryTabs;
-        if ($twoColumns) {
-            return $this->makePartial('update_2col');
+        if (is_string($twoColumnsOrTemplate)) {
+            $this->vars['wakaLayout'] = $twoColumnsOrTemplate;
+            return  $this->makePartial('update_2col');    
+        } else if($twoColumnsOrTemplate) {
+            $this->vars['wakaLayout'] = "form-with-sidebar";
+            return $this->makePartial('update_2col');    
         } else {
             return $this->makePartial('update');
         }
