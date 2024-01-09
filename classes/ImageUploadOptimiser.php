@@ -21,7 +21,7 @@ class ImageUploadOptimiser
             list($width, $height) = getimagesize($tempFilePath);
             $largest = max($width, $height);
             $ratioReduction = $maxSize / $largest;
-            trace_log($ratioReduction);
+            //trace_log($ratioReduction);
 
             if ($ratioReduction < 1) {
                 $newWidth = $width * $ratioReduction;
