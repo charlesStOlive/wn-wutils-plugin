@@ -1,4 +1,6 @@
-<?php namespace Waka\Wutils\Console;
+<?php
+
+namespace Waka\Wutils\Console;
 
 use Lang;
 use File;
@@ -10,6 +12,7 @@ use Symfony\Component\Console\Input\InputArgument;
 use System\Classes\PluginManager;
 use System\Models\Parameter;
 use System\Models\File as FileModel;
+use Illuminate\Support\Str;
 
 /**
  * @author Boris Koumondji <brexis@yahoo.fr>
@@ -48,19 +51,20 @@ class CleanFiles extends Command
      */
     public function handle()
     {
-        if($this->option('exec')) {
+        if ($this->option('exec')) {
             $this->executeClean = true;
         }
         $this->purgeFileOrphans();
         $this->utilPurgeUploads();
     }
 
-    public function purgeFileOrphans() {
+    public function purgeFileOrphans()
+    {
         $yesterday = \Carbon\Carbon::now()->subDay();
         $query = \System\Models\File::whereNull('field')->whereNull('attachment_id')->whereNull('attachment_type')->where('updated_at', '<', $yesterday);
         $count = $query->count();
-        $this->info('Delete file orphans : '.$count);
-        if($count && $this->executeClean) {
+        $this->info('Delete file orphans : ' . $count);
+        if ($count && $this->executeClean) {
             $this->info('Netoyage file orphans');
             $query->get()->each->delete();
         }
@@ -83,24 +87,26 @@ class CleanFiles extends Command
         $uploadsPath = Config::get('filesystems.disks.local.root', storage_path('app')) . '/' . Config::get('cms.storage.uploads.folder', 'uploads');
 
         $exluedDir = [
-            storage_path('app/uploads/tempproductor'),
+            'tempproductor',
         ];
 
         // Recursive function to scan the directory for files and ensure they exist in system_files.
-        $purgeFunc = function ($targetDir) use (&$purgeFunc, &$totalCount, $uploadsPath, $validFiles, $daysHour,$daysWeek, $daysMonth, $exluedDir ) {
-            if ($files = File::glob($targetDir.'/*')) {
+        $purgeFunc = function ($targetDir) use (&$purgeFunc, &$totalCount, $uploadsPath, $validFiles, $daysHour, $daysWeek, $daysMonth, $exluedDir) {
+            if ($files = File::glob($targetDir . '/*')) {
                 if ($dirs = File::directories($targetDir)) {
                     foreach ($dirs as $dir) {
-                        //trace_log($dir);
-                        if(in_array($dir,  $exluedDir)) {
-                            //trace_log('on ne touche pas a tempproductor');
-                            continue;
+                        $excludedFound = false;
+                        foreach ($exluedDir as $excluded) {
+                            if (Str::endsWith($dir, $excluded)) {
+                                $excludedFound = true;
+                                break;
+                            }
                         }
+                        //trace_log($dir);
                         $purgeFunc($dir);
-
-                        if (File::isDirectoryEmpty($dir) && is_writeable($dir)) {
+                        if (File::isDirectoryEmpty($dir) && is_writeable($dir) && !$excludedFound) {
                             rmdir($dir);
-                            $this->info('Removed folder: '. str_replace($uploadsPath, '', $dir));
+                            $this->info('Removed folder: ' . str_replace($uploadsPath, '', $dir));
                         }
                     }
                 }
@@ -117,8 +123,8 @@ class CleanFiles extends Command
 
                     $fileEndPath = str_replace($uploadsPath, '', $file);
                     $inWeek = str_contains($fileEndPath, 'week');
-                    $inMonth = str_contains($fileEndPath,'month');
-                    $isThumb = str_contains($fileEndPath,'thumb');
+                    $inMonth = str_contains($fileEndPath, 'month');
+                    $isThumb = str_contains($fileEndPath, 'thumb');
 
                     // Skip files unable to be purged
                     if (!is_writeable($file)) {
@@ -128,34 +134,34 @@ class CleanFiles extends Command
 
                     // Skip valid files
                     if (in_array(basename($file), $validFiles)) {
-                        $this->warn('Skipped file in use: '. $fileEndPath);
+                        $this->warn('Skipped file in use: ' . $fileEndPath);
                         continue;
                     }
                     $date = \Carbon\Carbon::parse(filemtime($file));
 
 
-                    
-                    if($daysHour->lte($date)) {
-                        $this->warn('Skipped file to young: '. $fileEndPath);
+
+                    if ($daysHour->lte($date)) {
+                        $this->warn('Skipped file to young: ' . $fileEndPath);
                         continue;
                     }
-                    $this->warn($date." Date fichier : ".$date->isoFormat('LLL')." Date 1h : ".$daysHour->isoFormat('LLL')."  inWeek:".$inWeek." inMonth: ".$inMonth." isThumb: ".$isThumb);
-                    if($daysWeek->lte($date) && $inWeek) {
-                        $this->warn('Skipped file 1h-1w but in month or in week or isThumb:  '. $fileEndPath);
+                    $this->warn($date . " Date fichier : " . $date->isoFormat('LLL') . " Date 1h : " . $daysHour->isoFormat('LLL') . "  inWeek:" . $inWeek . " inMonth: " . $inMonth . " isThumb: " . $isThumb);
+                    if ($daysWeek->lte($date) && $inWeek) {
+                        $this->warn('Skipped file 1h-1w but in month or in week or isThumb:  ' . $fileEndPath);
                         continue;
                     }
                     //$this->warn($date." Date fichier : ".$date->isoFormat('LLL')." Date 1h : ".$daysHour->isoFormat('LLL')."  inWeek:".$inWeek." inMonth: ".$inMonth." isThumb: ".$isThumb." date sup oneweek ".$date->gte($daysWeek));
-                    if($daysMonth->lte($date) && ($inMonth or $isThumb)) {
-                        $this->warn('Skipped file 1w-1m and in month or isThumb: '. $fileEndPath);
+                    if ($daysMonth->lte($date) && ($inMonth or $isThumb)) {
+                        $this->warn('Skipped file 1w-1m and in month or isThumb: ' . $fileEndPath);
                         continue;
                     }
-                    
-                    
-                    if($this->executeClean) {
+
+
+                    if ($this->executeClean) {
                         unlink($file);
-                        $this->info('Purged: '. $fileEndPath);
+                        $this->info('Purged: ' . $fileEndPath);
                     } else {
-                        $this->info('Will be Purged: '. $fileEndPath);
+                        $this->info('Will be Purged: ' . $fileEndPath);
                     }
                     $totalCount++;
                 }
@@ -166,8 +172,8 @@ class CleanFiles extends Command
 
         if ($totalCount > 0 && $this->executeClean) {
             $this->comment(sprintf('Successfully deleted %d invalid file(s), leaving %d valid files', $totalCount, count($validFiles)));
-        } elseif($totalCount > 0 && !$this->executeClean) {
-             $this->comment(sprintf('if executed it will  delete %d invalid file(s), leaving %d valid files', $totalCount, count($validFiles)));
+        } elseif ($totalCount > 0 && !$this->executeClean) {
+            $this->comment(sprintf('if executed it will  delete %d invalid file(s), leaving %d valid files', $totalCount, count($validFiles)));
         } else {
             $this->comment('No files found to purge.');
         }
